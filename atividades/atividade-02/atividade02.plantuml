@@ -1,0 +1,111 @@
+@startuml ATIVIDADE_02
+entity TB_MEDIA_TYPES {
+  *id : INTEGER <<PK>>
+  --
+  *name : NVARCHAR(120)
+}
+
+entity TB_GENRES {
+  *id : INTEGER <<PK>>
+  --
+  *name : NVARCHAR(120)
+}
+
+entity TB_TRACKS {
+  *id : INTEGER <<PK>>
+  --
+  *name : NVARCHAR(120)
+  *album_id : INTEGER <<FK>>
+  *media_type_id : INTEGER <<FK>>
+  *genre_id : INTEGER <<FK>>
+  composer : NVARCHAR(220)
+  milliseconds : INTEGER
+  bytes : INTEGER
+  unit_price : INTEGER
+}
+
+entity TB_ARTISTS {
+  *id : INTEGER <<PK>>
+  --
+  *name : NVARCHAR(120)
+}
+
+entity TB_PLAYLIST_TRACK {
+  *id : INTEGER <<PK>>
+  --
+  *track_id : INTEGER <<FK>>
+}
+
+entity TB_PLAYLISTS {
+  *id : INTEGER <<PK>>
+  --
+  *name : NVARCHAR(120)
+}
+
+entity TB_ALBUMS {
+  *id : INTEGER <<PK>>
+  --
+  *title : NVARCHAR(160)
+  *artist_id : INTEGER <<FK>>
+}
+
+entity TB_INVOICE_ITEMS {
+  *id : INTEGER <<PK>>
+  --
+  *invoice_id : INTEGER <<FK>>
+  *track_id : INTEGER <<FK>>
+  unit_price : NUMERIC
+  quantity : INTEGER
+}
+
+entity TB_INVOICES {
+  *id : INTEGER <<PK>>
+  --
+  *customer_id : INTEGER <<FK>>
+  *invoice_date : DATETIME
+  billing_address : NVARCHAR(120)
+  billing_city : NVARCHAR(120)
+}
+
+entity TB_CUSTOMERS {
+  *id : INTEGER <<PK>>
+  --
+  *first_name : NVARCHAR(40)
+  *last_name : NVARCHAR(40)
+  *company : NVARCHAR(80)
+  *address : NVARCHAR(70)
+  *city : NVARCHAR(40)
+  *state : NVARCHAR(40)
+  *country : NVARCHAR(40)
+  *postal_code : NVARCHAR(10)
+  *phone : NVARCHAR(24)
+  *fax : NVARCHAR(24)
+  *email : NVARCHAR(60)
+  *suport_rep_id : INTEGER <<FK>>
+}
+
+entity TB_EMPLOYEES {
+  *id : INTEGER <<PK>>
+  --
+  *first_name : NVARCHAR(40)
+  *last_name : NVARCHAR(40)
+  *title : NVARCHAR(130)
+  *reports_to : INTEGER
+  *birth_date : DATETIME
+  *hire_date : DATETIME
+  *address : NVARCHAR(70)
+}
+
+TB_MEDIA_TYPES ||--o{ TB_TRACKS
+TB_GENRES |o--o{ TB_TRACKS
+TB_PLAYLISTS ||--o| TB_PLAYLIST_TRACK
+TB_PLAYLIST_TRACK |o--|| TB_TRACKS
+TB_ARTISTS ||--o{ TB_ALBUMS
+TB_ALBUMS |o--o{ TB_TRACKS
+TB_TRACKS ||--o{ TB_INVOICE_ITEMS
+TB_INVOICE_ITEMS }o--|| TB_INVOICES
+TB_INVOICES }o--|| TB_CUSTOMERS
+TB_CUSTOMERS }o--o| TB_EMPLOYEES
+TB_EMPLOYEES }o--o| TB_EMPLOYEES
+
+@enduml
